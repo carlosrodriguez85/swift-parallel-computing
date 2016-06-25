@@ -10,6 +10,8 @@
 		8E4021511D1F1C06001196D0 /* ParallelComputing.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E4021501D1F1C06001196D0 /* ParallelComputing.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E4021581D1F1C06001196D0 /* ParallelComputing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E40214D1D1F1C06001196D0 /* ParallelComputing.framework */; };
 		8E40215D1D1F1C06001196D0 /* ParallelComputingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E40215C1D1F1C06001196D0 /* ParallelComputingTests.swift */; };
+		8E4021681D1F1C1F001196D0 /* SequenceType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4021671D1F1C1F001196D0 /* SequenceType+Extensions.swift */; };
+		8E40216A1D1F1C76001196D0 /* ThreadSafeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4021691D1F1C76001196D0 /* ThreadSafeObject.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +31,8 @@
 		8E4021571D1F1C06001196D0 /* ParallelComputingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParallelComputingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E40215C1D1F1C06001196D0 /* ParallelComputingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallelComputingTests.swift; sourceTree = "<group>"; };
 		8E40215E1D1F1C06001196D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E4021671D1F1C1F001196D0 /* SequenceType+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SequenceType+Extensions.swift"; sourceTree = "<group>"; };
+		8E4021691D1F1C76001196D0 /* ThreadSafeObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadSafeObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +77,8 @@
 			children = (
 				8E4021501D1F1C06001196D0 /* ParallelComputing.h */,
 				8E4021521D1F1C06001196D0 /* Info.plist */,
+				8E4021671D1F1C1F001196D0 /* SequenceType+Extensions.swift */,
+				8E4021691D1F1C76001196D0 /* ThreadSafeObject.swift */,
 			);
 			path = ParallelComputing;
 			sourceTree = "<group>";
@@ -194,6 +200,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E40216A1D1F1C76001196D0 /* ThreadSafeObject.swift in Sources */,
+				8E4021681D1F1C1F001196D0 /* SequenceType+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +318,7 @@
 		8E4021621D1F1C06001196D0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -320,12 +329,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = es.everywaretech.ParallelComputing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		8E4021631D1F1C06001196D0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -378,6 +389,7 @@
 				8E4021631D1F1C06001196D0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8E4021641D1F1C06001196D0 /* Build configuration list for PBXNativeTarget "ParallelComputingTests" */ = {
 			isa = XCConfigurationList;
@@ -386,6 +398,7 @@
 				8E4021661D1F1C06001196D0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
