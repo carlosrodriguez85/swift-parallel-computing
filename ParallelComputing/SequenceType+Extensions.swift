@@ -9,37 +9,31 @@
 import Foundation
 
 extension CollectionType where Self.Index.Distance == Int, Self.Index : Comparable, Self.SubSequence.Generator.Element == Self.Generator.Element {
-    public func parallelMap<T>(maxConcurrentOperations maxConcurrentOperations:Int, transform: (Self.Generator.Element) throws -> T) -> [T?] {
+    public func parallelMap<T>(executor executor:ParallelExecutor, transform: (Self.Generator.Element) throws -> T) -> [T?] {
         let result = ThreadSafeReference([T?](count:self.count, repeatedValue:nil))
-        let operationQueue = NSOperationQueue()
-        operationQueue.qualityOfService = .UserInitiated
-        operationQueue.maxConcurrentOperationCount = maxConcurrentOperations
         
         for (idx, object) in self.enumerate() {
-            operationQueue.addOperationWithBlock{
+            executor.addOperationWithBlock{
                 let transformedValue = try? transform(object)
                 result.performBlock{ $0[idx] = transformedValue }
             }
             
-            if idx % maxConcurrentOperations == 0 {
-                operationQueue.waitUntilAllOperationsAreFinished() //avoid overloading the queue with too many operations
+            if idx % executor.maxConcurrentOperationCount == 0 {
+                executor.waitUntilAllOperationsAreFinished() //avoid overloading the queue with too many operations
             }
         }
         
-        operationQueue.waitUntilAllOperationsAreFinished()
+        executor.waitUntilAllOperationsAreFinished()
         
         return result.unsafeInternalReference
     }
     
-    public func partitionedParallelMap<T>(numberOfPartitions numberOfPartitions:Int, transform: (Self.Generator.Element) throws -> T) rethrows -> [T?] {
+    public func partitionedParallelMap<T>(executor executor:ParallelExecutor, numberOfPartitions:Int, transform: (Self.Generator.Element) throws -> T) rethrows -> [T?] {
         guard numberOfPartitions < self.count && numberOfPartitions > 0 else {
             return try self.map(transform)
         }
         
         let result = ThreadSafeReference([T?](count:self.count, repeatedValue:nil))
-        let operationQueue = NSOperationQueue()
-        operationQueue.qualityOfService = .UserInitiated
-        operationQueue.maxConcurrentOperationCount = numberOfPartitions
         
         let partitionSize:Int = self.count / numberOfPartitions
         
@@ -57,7 +51,7 @@ extension CollectionType where Self.Index.Distance == Int, Self.Index : Comparab
             
             lastEndIndexInt = endIndexInt
             
-            operationQueue.addOperationWithBlock{
+            executor.addOperationWithBlock{
                 let subsequence = self[startIndex..<endIndex]
                 
                 if let partialResult:[T?] = try? subsequence.map(transform) {
@@ -71,7 +65,7 @@ extension CollectionType where Self.Index.Distance == Int, Self.Index : Comparab
             let startIndex = self.startIndex.advancedBy(lastEndIndexInt)
             let endIndex = self.endIndex
             
-            operationQueue.addOperationWithBlock{
+            executor.addOperationWithBlock{
                 let subsequence = self[startIndex..<endIndex]
                 
                 if let partialResult:[T?] = try? subsequence.map(transform) {
@@ -80,19 +74,16 @@ extension CollectionType where Self.Index.Distance == Int, Self.Index : Comparab
             }
         }
         
-        operationQueue.waitUntilAllOperationsAreFinished()
+        executor.waitUntilAllOperationsAreFinished()
         
         return result.unsafeInternalReference
     }
     
-    public func parallelReduce<T>(maxConcurrentOperations maxConcurrentOperations:Int, initial:T, combine: (T, Self.Generator.Element) throws -> T) -> T {
+    public func parallelReduce<T>(executor executor:ParallelExecutor, initial:T, combine: (T, Self.Generator.Element) throws -> T) -> T {
         let result = ThreadSafeReference(initial)
-        let operationQueue = NSOperationQueue()
-        operationQueue.qualityOfService = .UserInitiated
-        operationQueue.maxConcurrentOperationCount = maxConcurrentOperations
         
         for (idx, object) in self.enumerate() {
-            operationQueue.addOperationWithBlock{
+            executor.addOperationWithBlock{
                 result.performBlock{ (currentValue) in
                     if let partialResult = try? combine(currentValue, object) {
                         currentValue = partialResult
@@ -100,25 +91,22 @@ extension CollectionType where Self.Index.Distance == Int, Self.Index : Comparab
                 }
             }
             
-            if idx % maxConcurrentOperations == 0 {
-                operationQueue.waitUntilAllOperationsAreFinished() //avoid overloading the queue with too many operations
+            if idx % executor.maxConcurrentOperationCount == 0 {
+                executor.waitUntilAllOperationsAreFinished() //avoid overloading the queue with too many operations
             }
         }
         
-        operationQueue.waitUntilAllOperationsAreFinished()
+        executor.waitUntilAllOperationsAreFinished()
         
         return result.unsafeInternalReference
     }
     
-    public func partitionedParallelReduce<T>(numberOfPartitions numberOfPartitions:Int, initial:T, combine: (T, Self.Generator.Element) throws -> T) rethrows -> T {
+    public func partitionedParallelReduce<T>(executor executor:ParallelExecutor, numberOfPartitions:Int, initial:T, combine: (T, Self.Generator.Element) throws -> T) rethrows -> T {
         guard numberOfPartitions < self.count && numberOfPartitions > 0 else {
             return try self.reduce(initial, combine: combine)
         }
         
         let result = ThreadSafeReference(initial)
-        let operationQueue = NSOperationQueue()
-        operationQueue.qualityOfService = .UserInitiated
-        operationQueue.maxConcurrentOperationCount = numberOfPartitions
         
         let partitionSize:Int = self.count / numberOfPartitions
         
@@ -136,7 +124,7 @@ extension CollectionType where Self.Index.Distance == Int, Self.Index : Comparab
             
             lastEndIndexInt = endIndexInt
             
-            operationQueue.addOperationWithBlock{
+            executor.addOperationWithBlock{
                 let subsequence = self[startIndex..<endIndex]
                 
                 result.performBlock{(currentValue) in
@@ -152,7 +140,7 @@ extension CollectionType where Self.Index.Distance == Int, Self.Index : Comparab
             let startIndex = self.startIndex.advancedBy(lastEndIndexInt)
             let endIndex = self.endIndex
             
-            operationQueue.addOperationWithBlock{
+            executor.addOperationWithBlock{
                 let subsequence = self[startIndex..<endIndex]
                 
                 result.performBlock{(currentValue) in
@@ -163,7 +151,7 @@ extension CollectionType where Self.Index.Distance == Int, Self.Index : Comparab
             }
         }
         
-        operationQueue.waitUntilAllOperationsAreFinished()
+        executor.waitUntilAllOperationsAreFinished()
         
         return result.unsafeInternalReference
     }

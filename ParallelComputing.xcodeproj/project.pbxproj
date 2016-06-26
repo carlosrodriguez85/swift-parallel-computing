@@ -12,6 +12,7 @@
 		8E40215D1D1F1C06001196D0 /* ParallelComputingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E40215C1D1F1C06001196D0 /* ParallelComputingTests.swift */; };
 		8E4021681D1F1C1F001196D0 /* SequenceType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4021671D1F1C1F001196D0 /* SequenceType+Extensions.swift */; };
 		8E40216A1D1F1C76001196D0 /* ThreadSafeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4021691D1F1C76001196D0 /* ThreadSafeObject.swift */; };
+		8E71BC4E1D1F51E300CDA93D /* ParallelExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E71BC4D1D1F51E300CDA93D /* ParallelExecutor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 		8E40215E1D1F1C06001196D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E4021671D1F1C1F001196D0 /* SequenceType+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SequenceType+Extensions.swift"; sourceTree = "<group>"; };
 		8E4021691D1F1C76001196D0 /* ThreadSafeObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadSafeObject.swift; sourceTree = "<group>"; };
+		8E71BC4D1D1F51E300CDA93D /* ParallelExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParallelExecutor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				8E4021521D1F1C06001196D0 /* Info.plist */,
 				8E4021671D1F1C1F001196D0 /* SequenceType+Extensions.swift */,
 				8E4021691D1F1C76001196D0 /* ThreadSafeObject.swift */,
+				8E71BC4D1D1F51E300CDA93D /* ParallelExecutor.swift */,
 			);
 			path = ParallelComputing;
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E40216A1D1F1C76001196D0 /* ThreadSafeObject.swift in Sources */,
+				8E71BC4E1D1F51E300CDA93D /* ParallelExecutor.swift in Sources */,
 				8E4021681D1F1C1F001196D0 /* SequenceType+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
