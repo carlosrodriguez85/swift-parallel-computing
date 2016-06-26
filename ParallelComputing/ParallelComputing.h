@@ -6,7 +6,7 @@
 //  Copyright © 2016 Everyware Technologies. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for ParallelComputing.
 FOUNDATION_EXPORT double ParallelComputingVersionNumber;
